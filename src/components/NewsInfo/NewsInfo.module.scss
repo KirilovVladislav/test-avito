@@ -1,0 +1,12 @@
+.newsInfo {
+  & > * {
+    border-right: 1px solid #000;
+    padding: 0 10px;
+  }
+  & :last-child {
+    border: none;
+  }
+  & :first-child {
+    padding-left: 0;
+  }
+}
