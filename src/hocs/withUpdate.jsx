@@ -44,7 +44,6 @@ export const withUpdate = (Component) =>
       } else if (isHandleUpdate) {
         setAlertMessage(true)
       }
-      setIsHandleUpdate(false)
     }, [activeNews])
 
     useEffect(() => {
@@ -60,6 +59,7 @@ export const withUpdate = (Component) =>
       if (isHandleUpdate) {
         const timeout = setTimeout(() => {
           setAlertMessage(null)
+          setIsHandleUpdate(false)
         }, 5000)
         return () => clearTimeout(timeout)
       }

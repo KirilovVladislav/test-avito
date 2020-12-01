@@ -1,9 +1,11 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { compose } from 'redux'
 
 import { Container, ListGroup, Alert } from 'react-bootstrap'
 import styled from 'styled-components'
 
+import { clearNews } from '../slice/newsSlice'
 import { NewsItem } from '../components/NewsItem/NewsItem'
 import { ButtonUpdate } from '../components/ButtonUpdate/ButtonUpdate'
 import { withUpdate } from '../hocs/withUpdate'
@@ -14,14 +16,13 @@ const Header = styled.header`
   align-items: flex-start;
 `
 
-const HomePage = ({
-  setCallback,
-  data = [],
-  handleUpdate,
-  alertMessage = false,
-}) => {
+const HomePage = ({ setCallback, data = [], handleUpdate, alertMessage }) => {
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(true)
+
   useEffect(() => {
     setCallback(`getNewsIdList`)
+    return () => dispatch(clearNews())
   }, [])
 
   return (
@@ -33,8 +34,17 @@ const HomePage = ({
       {alertMessage && (
         <Alert variant={`primary`}>there is no latest news in the feed</Alert>
       )}
+      {loading && <Alert>loading news</Alert>}
       <ListGroup>
-        {data[0] && data.map((item) => <NewsItem key={item} id={item} />)}
+        {data[0] &&
+          data.map((item) => (
+            <NewsItem
+              key={item}
+              loading={loading}
+              setLoading={setLoading}
+              id={item}
+            />
+          ))}
       </ListGroup>
     </Container>
   )

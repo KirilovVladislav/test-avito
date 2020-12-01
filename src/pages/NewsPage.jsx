@@ -1,8 +1,10 @@
 import React, { memo, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Container, Alert, Button } from 'react-bootstrap'
 import { compose } from 'redux'
 import { Link } from 'react-router-dom'
 
+import { clearNews } from '../slice/newsSlice'
 import { NewsInfo } from '../components/NewsInfo/NewsInfo'
 import { Comments } from '../components/Comments/Comments'
 import { ButtonUpdate } from '../components/ButtonUpdate/ButtonUpdate'
@@ -15,9 +17,12 @@ const NewsPage = ({
   handleUpdate,
   alertMessage = false,
 }) => {
+  const dispatch = useDispatch()
   useEffect(() => {
     setCallback(`getItem`)
     setAction(`setActiveNews`)
+    dispatch(clearNews())
+    // return () => dispatch(clearNews())
   }, [])
 
   return (

@@ -18,7 +18,11 @@ const slice = createSlice({
       state.newsIdList = action.payload
     },
     setNewsItem(state, action) {
-      state.news = [action.payload, ...state.news]
+      state.news = [...state.news, action.payload]
+      state.news.sort((a, b) => b.id - a.id)
+    },
+    clearNews(state) {
+      state.news = []
     },
     setActiveNews(state, action) {
       state.activeNews = action.payload
@@ -33,6 +37,7 @@ const slice = createSlice({
 export const {
   setNewsIdList,
   setNewsItem,
+  clearNews,
   setActiveNews,
   setComment,
 } = slice.actions
