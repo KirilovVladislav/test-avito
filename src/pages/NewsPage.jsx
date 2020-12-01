@@ -1,31 +1,46 @@
-import React, { memo, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Container } from 'react-bootstrap'
+import React, { memo, useEffect } from 'react'
+import { Container, Alert, Button } from 'react-bootstrap'
 import { compose } from 'redux'
-import { withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import { getItem } from '../slice/newsSlice'
 import { NewsInfo } from '../components/NewsInfo/NewsInfo'
 import { Comments } from '../components/Comments/Comments'
+import { ButtonUpdate } from '../components/ButtonUpdate/ButtonUpdate'
+import { withUpdate } from '../hocs/withUpdate'
 
-const NewsPage = ({ match }) => {
-  const { itemId } = match.params
-  const dispatch = useDispatch()
-  const [data, setData] = useState({})
-
+const NewsPage = ({
+  setAction,
+  setCallback,
+  data = {},
+  handleUpdate,
+  alertMessage = false,
+}) => {
   useEffect(() => {
-    dispatch(getItem(itemId, setData, `setNewsItem`))
+    setCallback(`getItem`)
+    setAction(`setActiveNews`)
   }, [])
 
   return (
     <Container>
       {data.title ? (
         <>
+          <Link to={`/`}>
+            <Button variant="outline-primary">Back to news list</Button>
+          </Link>
           <a href={`${data.url}`} target="_blank">
             <h3>{`${data.title}`}</h3>
           </a>
           <NewsInfo {...data} />
-          <Comments {...data} />
+          {alertMessage && (
+            <Alert variant={`primary`}>
+              there are no latest comments in the feed
+            </Alert>
+          )}
+          <Comments {...data}>
+            <ButtonUpdate handleUpdate={handleUpdate}>
+              update comments
+            </ButtonUpdate>
+          </Comments>
         </>
       ) : (
         <div>load</div>
@@ -34,4 +49,4 @@ const NewsPage = ({ match }) => {
   )
 }
 
-export default compose(withRouter, memo)(NewsPage)
+export default compose(withUpdate, memo)(NewsPage)

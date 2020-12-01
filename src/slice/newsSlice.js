@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const PAGE_SIZE = 100
 
 const initialState = {
   newsIdList: [],
   news: [],
+  activeNews: {},
   comments: [],
 }
 
@@ -16,7 +18,10 @@ const slice = createSlice({
       state.newsIdList = action.payload
     },
     setNewsItem(state, action) {
-      state.news = [action.payload, ...state.news].slice(0, 5)
+      state.news = [action.payload, ...state.news]
+    },
+    setActiveNews(state, action) {
+      state.activeNews = action.payload
     },
     setComment(state, action) {
       state.comments = [...state.comments, action.payload]
@@ -28,23 +33,24 @@ const slice = createSlice({
 export const {
   setNewsIdList,
   setNewsItem,
+  setActiveNews,
   setComment,
 } = slice.actions
 
 
 export const getNewsIdList = () => async (dispatch, _, api) => {
   const res = await api.get(`/newstories.json`)
-  dispatch(setNewsIdList(res.data.slice(0, 5)))
+  dispatch(setNewsIdList(res.data.slice(0, PAGE_SIZE)))
 }
 
-export const getItem = (id, callback, actionType) => async (dispatch, _, api) => {
+export const getItem = (id, actionType, callback) => async (dispatch, _, api) => {
   const res = await api.get(`/item/${id}.json`)
   if (res && res.data) {
     if (res.data.deleted) {
       return
     }
     dispatch(slice.actions[actionType](res.data))
-    callback(res.data)
+    callback && callback(res.data)
   }
 }
 

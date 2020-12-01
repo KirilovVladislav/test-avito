@@ -1,13 +1,19 @@
 import React from 'react'
+import { Container } from 'react-bootstrap'
 
 import { Comment } from '../Comment/Comment'
-import { Counter } from '../Counter/Counter'
+import styles from './Comments.module.scss'
 
-export const Comments = ({ kids = [] }) => {
+export const Comments = ({ kids = [], descendants, children }) => {
   return (
     <section>
-      <h4>Comments</h4>
-      <Counter />
+      <Container className={styles.container}>
+        <h4>
+          Comments
+          <span className={styles.counter}>{`${descendants}`}</span>
+        </h4>
+        {children}
+      </Container>
       {kids.map((id) => (
         <Comment id={id} key={id} />
       ))}

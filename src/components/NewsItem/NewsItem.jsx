@@ -12,7 +12,7 @@ export const NewsItem = memo(({ id }) => {
   const [itemInfo, setItemInfo] = useState({})
 
   useEffect(() => {
-    dispatch(getItem(id, setItemInfo, `setNewsItem`))
+    dispatch(getItem(id, `setNewsItem`, setItemInfo))
   }, [])
 
   return (

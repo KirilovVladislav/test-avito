@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.counter {
+  margin-left: auto;
+
+  font-style: 2rem;
+
+  border-left: 2px solid #000;
+  margin-left: 20px;
+  padding-left: 20px;
+}
