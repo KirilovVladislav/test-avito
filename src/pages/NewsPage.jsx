@@ -1,14 +1,18 @@
 import React, { memo, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Container, Alert, Button } from 'react-bootstrap'
 import { compose } from 'redux'
 import { Link } from 'react-router-dom'
+
+import { Container, Alert, Button, Spinner } from 'react-bootstrap'
+import styled from 'styled-components'
 
 import { clearNews } from '../slice/newsSlice'
 import { NewsInfo } from '../components/NewsInfo/NewsInfo'
 import { Comments } from '../components/Comments/Comments'
 import { ButtonUpdate } from '../components/ButtonUpdate/ButtonUpdate'
 import { withUpdate } from '../hocs/withUpdate'
+
+const StyledNewsInfo = styled(NewsInfo)``
 
 const NewsPage = ({
   setAction,
@@ -22,7 +26,6 @@ const NewsPage = ({
     setCallback(`getItem`)
     setAction(`setActiveNews`)
     dispatch(clearNews())
-    // return () => dispatch(clearNews())
   }, [])
 
   return (
@@ -35,7 +38,7 @@ const NewsPage = ({
           <a href={`${data.url}`} target="_blank">
             <h3>{`${data.title}`}</h3>
           </a>
-          <NewsInfo {...data} />
+          <NewsInfo className={`mx-auto`} {...data} />
           {alertMessage && (
             <Alert variant={`primary`}>
               there are no latest comments in the feed
@@ -48,7 +51,9 @@ const NewsPage = ({
           </Comments>
         </>
       ) : (
-        <div>load</div>
+        <Spinner animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
       )}
     </Container>
   )

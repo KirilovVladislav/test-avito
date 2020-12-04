@@ -8,7 +8,7 @@ export const Comments = ({ kids = [], descendants, children }) => {
   return (
     <section>
       <Container className={styles.container}>
-        <h4>
+        <h4 className={styles.header}>
           Comments
           <span className={styles.counter}>{`${descendants}`}</span>
         </h4>
