@@ -27,7 +27,14 @@ const Header = styled.header`
   }
 `
 
-const HomePage = ({ setCallback, data = [], handleUpdate, alertMessage }) => {
+const HomePage = ({
+  setCallback,
+  data = [],
+  handleUpdate,
+  alertMessage,
+  touchStart,
+  touchEnd,
+}) => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(true)
 
@@ -37,7 +44,7 @@ const HomePage = ({ setCallback, data = [], handleUpdate, alertMessage }) => {
   }, [])
 
   return (
-    <StyledContainer>
+    <StyledContainer onTouchStart={touchStart} onTouchEnd={touchEnd}>
       <Header>
         <h2>Hacker News</h2>
         <ButtonUpdate handleUpdate={handleUpdate}>update news</ButtonUpdate>
