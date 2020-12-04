@@ -3,16 +3,14 @@ import { useDispatch } from 'react-redux'
 import { compose } from 'redux'
 import { Link } from 'react-router-dom'
 
-import { Container, Alert, Button, Spinner } from 'react-bootstrap'
-import styled from 'styled-components'
+import { Container, Alert, Button } from 'react-bootstrap'
 
 import { clearNews } from '../slice/newsSlice'
 import { NewsInfo } from '../components/NewsInfo/NewsInfo'
 import { Comments } from '../components/Comments/Comments'
 import { ButtonUpdate } from '../components/ButtonUpdate/ButtonUpdate'
+import { Overlay } from '../components/Overlay/Overlay'
 import { withUpdate } from '../hocs/withUpdate'
-
-const StyledNewsInfo = styled(NewsInfo)``
 
 const NewsPage = ({
   setAction,
@@ -51,9 +49,7 @@ const NewsPage = ({
           </Comments>
         </>
       ) : (
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+        <Overlay />
       )}
     </Container>
   )

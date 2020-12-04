@@ -13,11 +13,11 @@ import store from './store'
 
 
 ReactDOM.render(
-  <BrowserRouter>
-    {/* <HashRouter basename={`https://KirilovVladislav.github.io/test-avito`}> */}
+  // <BrowserRouter>
+  <HashRouter basename={`https://KirilovVladislav.github.io/test-avito`}>
     <Provider store={store}>
       <App />
     </Provider>
-  </BrowserRouter>,
+  </HashRouter>,
   document.getElementById('root')
 );
