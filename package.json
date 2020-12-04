@@ -17,7 +17,7 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.1"
   },
-  "homepage": "https://KirilovVladislav.github.io/test-avito",
+  "homepage": ".",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
