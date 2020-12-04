@@ -6,7 +6,7 @@ import { Time } from '../Time/Time'
 export const NewsInfo = ({ score, by, time }) => {
   return (
     <p className={styles.newsInfo}>
-      <span>{`${score} point`}</span>
+      <span>{`${score} ${score === 1 ? `point` : `points`}`}</span>
       <span>{`by ${by}`}</span>
       <Time time={time}> ago</Time>
     </p>
