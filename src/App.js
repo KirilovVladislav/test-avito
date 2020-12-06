@@ -28,6 +28,11 @@ const Header = styled.header`
 
   h2 {
     margin-bottom: 0;
+    margin-right: auto;
+  }
+
+  .btnBack {
+    margin-right: 10px;
   }
 
   @media (max-width: 480px) {
@@ -35,9 +40,11 @@ const Header = styled.header`
     padding: 10px;
     padding-bottom: 0;
 
-    h2 {
-      padding-top: 5px;
-      order: 1;
+    h2 {      
+      &.order {
+        order: 1;
+        padding-top: 5px;
+      }
     }
   }
 `
@@ -111,9 +118,9 @@ const App = () => {
         {alertMessage
           ? <StyledAlert variant={`primary`}>{`there ${activeNews ? 'are' : `is`} no latest ${activeNews ? 'comments' : `news`} in the feed`}</StyledAlert>
           : <>
-            <h2>Hacker News</h2>
+            <h2 className={`${activeNews && `order`}`}>Hacker News</h2>
             {activeNews && <Link to={`/`}>
-              <Button onClick={clearActiveItem} variant="outline-primary">
+              <Button className={`btnBack`} onClick={clearActiveItem} variant="outline-primary">
                 Back to news list
             </Button>
             </Link>}
