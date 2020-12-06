@@ -31,7 +31,14 @@ const Header = styled.header`
   }
 
   @media (max-width: 480px) {
-    padding: 0 10px;
+    flex-wrap: wrap;
+    padding: 10px;
+    padding-bottom: 0;
+
+    h2 {
+      padding-top: 5px;
+      order: 1;
+    }
   }
 `
 

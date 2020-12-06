@@ -2,6 +2,7 @@ import React, { memo, useEffect, useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
+import { Container } from 'react-bootstrap'
 
 import { NewsInfo } from '../components/NewsInfo/NewsInfo'
 import { Comments } from '../components/Comments/Comments'
@@ -21,13 +22,13 @@ const NewsPage = ({ match }) => {
   return (
     <>
       {newsData.title && (
-        <>
+        <Container>
           <a href={`${newsData.url}`} target="_blank">
             <h3>{`${newsData.title}`}</h3>
           </a>
           <NewsInfo className={`mx-auto`} {...newsData} />
           <Comments {...newsData}></Comments>
-        </>
+        </Container>
       )}
     </>
   )
