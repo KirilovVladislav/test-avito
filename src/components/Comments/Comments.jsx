@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Container } from 'react-bootstrap'
 
 import { Comment } from '../Comment/Comment'
 import styles from './Comments.module.scss'
 
-export const Comments = ({ kids = [], descendants, children }) => {
+export const Comments = memo(({ kids = [], descendants, children }) => {
   return (
     <section>
       <Container className={styles.container}>
@@ -19,4 +19,4 @@ export const Comments = ({ kids = [], descendants, children }) => {
       ))}
     </section>
   )
-}
+})

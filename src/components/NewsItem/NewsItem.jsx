@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { ListGroup } from 'react-bootstrap'
@@ -7,31 +7,24 @@ import { getItem } from '../../slice/newsSlice'
 import { NewsInfo } from '../NewsInfo/NewsInfo'
 import styles from './NewsItem.module.scss'
 
-export const NewsItem = memo(({ id, loading, setLoading }) => {
+export const NewsItem = memo(({ id }) => {
   const dispatch = useDispatch()
-  const { newsIdList } = useSelector((state) => state.news)
-  const [itemInfo, setItemInfo] = useState({})
+  const newsData = useSelector((state) =>
+    state.news.news.find((i) => i.id === id)
+  )
 
   useEffect(() => {
-    dispatch(getItem(id, `setNewsItem`, setItemInfo))
+    !newsData && dispatch(getItem(id, `setNewsItem`))
   }, [])
 
-  useEffect(() => {
-    if (itemInfo.title && newsIdList[newsIdList.length - 1] === id) {
-      setLoading(false)
-    }
-  }, [itemInfo])
-
   return (
-    <>
-      {!loading && itemInfo.title && (
-        <ListGroup.Item key={id}>
-          <Link to={`/item/${id}`}>
-            <h3 className={styles.title}>{`${itemInfo.title}`}</h3>
-          </Link>
-          <NewsInfo {...itemInfo} />
-        </ListGroup.Item>
-      )}
-    </>
+    newsData && (
+      <ListGroup.Item>
+        <Link to={`/item/${id}`}>
+          <h3 className={styles.title}>{`${newsData.title}`}</h3>
+        </Link>
+        <NewsInfo {...newsData} />
+      </ListGroup.Item>
+    )
   )
 })

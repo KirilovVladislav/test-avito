@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+import { setInitialized } from './appSlice'
+
 const PAGE_SIZE = 100
 
 const initialState = {
   newsIdList: [],
   news: [],
-  activeNews: {},
+  activeNews: null,
   comments: [],
 }
 
@@ -15,17 +17,23 @@ const slice = createSlice({
   initialState,
   reducers: {
     setNewsIdList(state, action) {
-      state.newsIdList = action.payload
+      if (state.newsIdList[0] !== action.payload[0]) {
+
+        state.newsIdList = action.payload
+      }
     },
     setNewsItem(state, action) {
       state.news = [...state.news, action.payload]
-      state.news.sort((a, b) => b.id - a.id)
-    },
-    clearNews(state) {
-      state.news = []
     },
     setActiveNews(state, action) {
-      state.activeNews = action.payload
+      if (!state.activeNews) {
+        state.activeNews = action.payload
+      } else if (state.activeNews.descendants !== action.payload.descendants) {
+        state.activeNews = action.payload
+      }
+    },
+    clearActiveNews(state) {
+      state.activeNews = null
     },
     setComment(state, action) {
       state.comments = [...state.comments, action.payload]
@@ -37,28 +45,29 @@ const slice = createSlice({
 export const {
   setNewsIdList,
   setNewsItem,
-  clearNews,
   setActiveNews,
+  clearActiveNews,
   setComment,
 } = slice.actions
 
 
-export const getNewsIdList = () => async (dispatch, _, api) => {
-  const res = await api.get(`/newstories.json`)
-  dispatch(setNewsIdList(res.data.slice(0, PAGE_SIZE)))
-}
-
-export const getItem = (id, actionType, callback) => async (dispatch, _, api) => {
+export const getItem = (id, callback, setter) => async (dispatch, _, api) => {
   const res = await api.get(`/item/${id}.json`)
   if (res && res.data) {
     if (res.data.deleted) {
       return
     }
-    dispatch(slice.actions[actionType](res.data))
-    callback && callback(res.data)
+    dispatch(slice.actions[callback](res.data))
+    setter && setter(res.data)
   }
+}
+
+export const getNewsIdList = () => async (dispatch, _, api) => {
+  const res = await api.get(`/newstories.json`)
+  const idList = res.data.slice(0, PAGE_SIZE)
+  dispatch(setNewsIdList(idList))
+  dispatch(setInitialized(true))
 }
 
 
 export default slice.reducer
-

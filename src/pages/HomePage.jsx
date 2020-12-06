@@ -1,71 +1,24 @@
-import React, { memo, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { compose } from 'redux'
+import React, { memo, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 
-import { Container, ListGroup, Alert } from 'react-bootstrap'
-import styled from 'styled-components'
+import { ListGroup } from 'react-bootstrap'
 
-import { clearNews } from '../slice/newsSlice'
 import { NewsItem } from '../components/NewsItem/NewsItem'
-import { ButtonUpdate } from '../components/ButtonUpdate/ButtonUpdate'
-import { Overlay } from '../components/Overlay/Overlay'
-import { withUpdate } from '../hocs/withUpdate'
 
-const StyledContainer = styled(Container)`
-  @media (max-width: 480px) {
-    padding: 0;
-  }
-`
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  @media (max-width: 480px) {
-    padding: 0 10px;
-  }
-`
-
-const HomePage = ({
-  setCallback,
-  data = [],
-  handleUpdate,
-  alertMessage,
-  touchStart,
-  touchEnd,
-}) => {
-  const dispatch = useDispatch()
-  const [loading, setLoading] = useState(true)
+const HomePage = ({ updateData }) => {
+  const newsIdList = useSelector((state) => state.news.newsIdList)
 
   useEffect(() => {
-    setCallback(`getNewsIdList`)
-    return () => dispatch(clearNews())
+    updateData()
   }, [])
 
   return (
-    <StyledContainer onTouchStart={touchStart} onTouchEnd={touchEnd}>
-      <Header>
-        <h2>Hacker News</h2>
-        <ButtonUpdate handleUpdate={handleUpdate}>update news</ButtonUpdate>
-      </Header>
-      {alertMessage && (
-        <Alert variant={`primary`}>there is no latest news in the feed</Alert>
-      )}
-      {loading && <Overlay />}
-      <ListGroup>
-        {data[0] &&
-          data.map((item) => (
-            <NewsItem
-              key={item}
-              loading={loading}
-              setLoading={setLoading}
-              id={item}
-            />
-          ))}
-      </ListGroup>
-    </StyledContainer>
+    <ListGroup>
+      {newsIdList.map((item) => (
+        <NewsItem key={item} id={item} />
+      ))}
+    </ListGroup>
   )
 }
 
-export default compose(withUpdate, memo)(HomePage)
+export default memo(HomePage)

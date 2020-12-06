@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Card, Container, Button } from 'react-bootstrap'
 
 import { getItem } from '../../slice/newsSlice'
 import styles from './Comment.module.scss'
 
-export const Comment = ({ id }) => {
+export const Comment = memo(({ id }) => {
   const dispatch = useDispatch()
   const [itemInfo, setItemInfo] = useState({})
   const [showCommentsTree, setShowCommentsTree] = useState(false)
@@ -45,4 +45,4 @@ export const Comment = ({ id }) => {
       )}
     </>
   )
-}
+})

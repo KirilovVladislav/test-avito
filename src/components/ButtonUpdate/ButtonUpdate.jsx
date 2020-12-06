@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Button } from 'react-bootstrap'
 
-export const ButtonUpdate = ({ handleUpdate, children }) => {
-  return <Button onClick={handleUpdate}>{children}</Button>
-}
+export const ButtonUpdate = memo(({ onClick, children }) => {
+  return <Button onClick={onClick}>{children}</Button>
+})

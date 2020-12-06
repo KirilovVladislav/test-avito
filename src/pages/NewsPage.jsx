@@ -1,58 +1,36 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo, useEffect, useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { compose } from 'redux'
-import { Link } from 'react-router-dom'
 
-import { Container, Alert, Button } from 'react-bootstrap'
-
-import { clearNews } from '../slice/newsSlice'
 import { NewsInfo } from '../components/NewsInfo/NewsInfo'
 import { Comments } from '../components/Comments/Comments'
-import { ButtonUpdate } from '../components/ButtonUpdate/ButtonUpdate'
-import { Overlay } from '../components/Overlay/Overlay'
-import { withUpdate } from '../hocs/withUpdate'
+import { getItem } from '../slice/newsSlice'
 
-const NewsPage = ({
-  setAction,
-  setCallback,
-  data = {},
-  handleUpdate,
-  alertMessage = false,
-}) => {
+const NewsPage = ({ match }) => {
+  const { itemId } = match.params
   const dispatch = useDispatch()
+  const [newsData, setNewsData] = useState({})
+
+  const setter = useCallback((data) => setNewsData(data), [])
+
   useEffect(() => {
-    setCallback(`getItem`)
-    setAction(`setActiveNews`)
-    dispatch(clearNews())
+    dispatch(getItem(itemId, `setActiveNews`, setter))
   }, [])
 
   return (
-    <Container>
-      {data.title ? (
+    <>
+      {newsData.title && (
         <>
-          <Link to={`/`}>
-            <Button variant="outline-primary">Back to news list</Button>
-          </Link>
-          <a href={`${data.url}`} target="_blank">
-            <h3>{`${data.title}`}</h3>
+          <a href={`${newsData.url}`} target="_blank">
+            <h3>{`${newsData.title}`}</h3>
           </a>
-          <NewsInfo className={`mx-auto`} {...data} />
-          {alertMessage && (
-            <Alert variant={`primary`}>
-              there are no latest comments in the feed
-            </Alert>
-          )}
-          <Comments {...data}>
-            <ButtonUpdate handleUpdate={handleUpdate}>
-              update comments
-            </ButtonUpdate>
-          </Comments>
+          <NewsInfo className={`mx-auto`} {...newsData} />
+          <Comments {...newsData}></Comments>
         </>
-      ) : (
-        <Overlay />
       )}
-    </Container>
+    </>
   )
 }
 
-export default compose(withUpdate, memo)(NewsPage)
+export default compose(memo, withRouter)(NewsPage)
